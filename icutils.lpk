@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <Package Version="4">
+    <Name Value="icutils"/>
+    <Type Value="RunAndDesignTime"/>
+    <CompilerOptions>
+      <Version Value="11"/>
+      <SearchPaths>
+        <OtherUnitFiles Value="."/>
+        <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
+      </SearchPaths>
+    </CompilerOptions>
+    <Version Build="2"/>
+    <Files Count="9">
+      <Item1>
+        <Filename Value="filefunc.pas"/>
+        <UnitName Value="filefunc"/>
+      </Item1>
+      <Item2>
+        <Filename Value="keyboardfunc.pas"/>
+        <UnitName Value="keyboardfunc"/>
+      </Item2>
+      <Item3>
+        <Filename Value="memfunc.pas"/>
+        <UnitName Value="memfunc"/>
+      </Item3>
+      <Item4>
+        <Filename Value="strfunc.pas"/>
+        <UnitName Value="strfunc"/>
+      </Item4>
+      <Item5>
+        <Filename Value="sysfunc.pas"/>
+        <UnitName Value="sysfunc"/>
+      </Item5>
+      <Item6>
+        <Filename Value="dictionary.pas"/>
+        <UnitName Value="dictionary"/>
+      </Item6>
+      <Item7>
+        <Filename Value="logfunc.pas"/>
+        <UnitName Value="logfunc"/>
+      </Item7>
+      <Item8>
+        <Filename Value="doc.txt"/>
+        <Type Value="Binary"/>
+      </Item8>
+      <Item9>
+        <Filename Value="collections.pas"/>
+        <UnitName Value="collections"/>
+      </Item9>
+    </Files>
+    <RequiredPkgs Count="2">
+      <Item1>
+        <PackageName Value="LCL"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="FCL"/>
+      </Item2>
+    </RequiredPkgs>
+    <UsageOptions>
+      <UnitPath Value="$(PkgOutDir)"/>
+    </UsageOptions>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+    <CustomOptions Items="ExternHelp" Version="2">
+      <_ExternHelp Items="Count"/>
+    </CustomOptions>
+  </Package>
+</CONFIG>
