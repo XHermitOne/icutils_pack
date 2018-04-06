@@ -1,7 +1,7 @@
 {
 Функции работы с файлами.
 
-Версия: 0.0.1.1
+Версия: 0.0.2.1
 }
 unit filefunc;
 
@@ -40,6 +40,9 @@ function CreateEmptyFileIfNotExists(sPath: AnsiString): Boolean;
 { Нормализовать путь до файла }
 function NormalPathFileName(sPath: AnsiString): AnsiString;
 
+{ Текущая папка }
+function GetCurDir(): AnsiString;
+
 implementation
 
 uses
@@ -51,9 +54,9 @@ function GetHomeDir(): AnsiString;
 begin
   result := '';
   if IsOSLinux() then
-    result := GetOSLinuxHomeDir()
+    Result := GetOSLinuxHomeDir()
   else if IsOSWindows() then
-    result := GetOSWindowsHomeDir()
+    Result := GetOSWindowsHomeDir()
     else
       logfunc.WarningMsg(Format('Не поддерживаемая ОС <%s>', [GetOSType()]));
 end;
@@ -63,9 +66,9 @@ end;
 }
 function GetOSLinuxHomeDir(): AnsiString;
 begin
-  result := '';
+  Result := '';
   {$IFDEF linux}
-  result := GetEnvironmentVariable('HOME');
+  Result := GetEnvironmentVariable('HOME');
   {$ENDIF}
 end;
 
@@ -74,9 +77,9 @@ end;
 }
 function GetOSWindowsHomeDir(): AnsiString;
 begin
-  result := '';
+  Result := '';
   {$IFDEF windows}
-  result := GetAppConfigDir(False);
+  Result := GetAppConfigDir(False);
   {$ENDIF}
 end;
 
@@ -85,7 +88,7 @@ end;
 }
 function JoinPath(PathParts: Array Of String): AnsiString;
 begin
-  result := JoinStr(PathParts, PathDelim);
+  Result := JoinStr(PathParts, PathDelim);
 end;
 
 {
@@ -93,7 +96,7 @@ end;
 }
 function SplitPath(sPath: AnsiString): TArrayOfString;
 begin
-  result := SplitStr(sPath, PathDelim);
+  Result := SplitStr(sPath, PathDelim);
 end;
 
 
@@ -102,7 +105,7 @@ end;
 }
 function CreateDirPath(sPath: AnsiString): Boolean;
 begin
-  result := False;
+  Result := False;
 
   // Нормализация пути
   sPath := NormalPathFileName(sPath);
@@ -110,7 +113,7 @@ begin
   if not DirectoryExists(sPath) then
   begin
     InfoMsg(Format('Создание папки <%s>', [sPath]));
-    result := CreateDirPathTree(sPath);
+    Result := CreateDirPathTree(sPath);
   end;
 end;
 
@@ -125,12 +128,12 @@ begin
   begin
     parent_path := ExtractFileDir(sPath);
     if not DirectoryExists(parent_path) then
-      result := CreateDirPathTree(parent_path);
+      Result := CreateDirPathTree(parent_path);
     CreateDir(sPath);
-    result := True;
-    exit;
+    Result := True;
+    Exit;
   end;
-  result := False;
+  Result := False;
 end;
 
 {
@@ -149,9 +152,9 @@ begin
     Rewrite(file_tmp);
     Writeln(file_tmp, '');   //Remember AnsiStrings are case sensitive
     CloseFile(file_tmp);
-    result := True;
+    Result := True;
   except
-    result := False;
+    Result := False;
     CloseFile(file_tmp);
   end;
 end;
@@ -161,9 +164,9 @@ end;
 }
 function CreateEmptyFileIfNotExists(sPath: AnsiString): Boolean;
 begin
-  result := False;
+  Result := False;
   if not FileExists(sPath) then
-    result := CreateEmptyFile(sPath)
+    Result := CreateEmptyFile(sPath)
 end;
 
 {
@@ -173,7 +176,13 @@ function NormalPathFileName(sPath: AnsiString): AnsiString;
 begin
   // Замена двойных слешей
   sPath := StringReplace(sPath, PathDelim + PathDelim, PathDelim, [rfReplaceAll]);
-  result := ExpandFileName(sPath);
+  Result := ExpandFileName(sPath);
+end;
+
+{ Текущая папка }
+function GetCurDir(): AnsiString;
+begin
+  Result := ExtractFilePath(ParamStr(0));
 end;
 
 end.

@@ -1,7 +1,7 @@
 {
 Функции взаимодействия с операционной системой
 
-Версия: 0.0.1.1
+Версия: 0.0.2.1
 }
 unit sysfunc;
 
@@ -10,7 +10,7 @@ unit sysfunc;
 interface
 
 uses
-    Classes, SysUtils;
+    Classes, SysUtils, Process, FileUtil;
 
 {$IFDEF linux}
 { some linux-specific code }
@@ -31,7 +31,16 @@ function IsOSLinux(): Boolean;
 { Проверка является ли ОС Windows }
 function IsOSWindows(): Boolean;
 
+{
+Запуск внешней программы
+@param Command комманда запуска
+}
+procedure ExecuteSystem(Command: AnsiString);
+
 implementation
+
+uses
+  strfunc, logfunc;
 
 {
 Тип операционной системы: linux/windows
@@ -51,6 +60,28 @@ end;
 function IsOSWindows(): Boolean;
 begin
   Result := OS = 'windows';
+end;
+
+{ Запуск внешней программы }
+procedure ExecuteSystem(Command: AnsiString);
+var
+  cmd: TArrayOfString;
+  i: Integer;
+begin
+  cmd := strfunc.SplitStr(Command, ' ');
+  with TProcess.Create(nil) do
+  try
+    Executable := FindDefaultExecutablePath(cmd[0]);
+    logfunc.DebugMsgFmt('Выполняющая программа <%s>', [Executable]);
+    for i := 1 to Length(cmd) - 1 do
+    begin
+      Parameters.Add(Trim(cmd[i]));
+      logfunc.DebugMsgFmt('%d. Параметр коммандной строки <%s>', [i, Trim(cmd[i])]);
+    end;
+    Execute;
+  finally
+    Free;
+  end;
 end;
 
 end.
