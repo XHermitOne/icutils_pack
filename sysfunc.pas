@@ -1,7 +1,7 @@
 {
 Функции взаимодействия с операционной системой
 
-Версия: 0.0.2.1
+Версия: 0.0.3.1
 }
 unit sysfunc;
 
@@ -10,7 +10,7 @@ unit sysfunc;
 interface
 
 uses
-    Classes, SysUtils, Process, FileUtil;
+    Classes, SysUtils, Process, FileUtil, StrUtils;
 
 {$IFDEF linux}
 { some linux-specific code }
@@ -36,6 +36,18 @@ function IsOSWindows(): Boolean;
 @param Command комманда запуска
 }
 procedure ExecuteSystem(Command: AnsiString);
+
+{
+Определить версию Python
+@param PythonExef комманда запуска Python
+}
+function GetPythonVersion(PythonExec: AnsiString): AnsiString;
+
+{ Определить версию Python3 }
+function GetPython3Version(): AnsiString;
+
+{ Определить версию Python2 }
+function GetPython2Version(): AnsiString;
 
 implementation
 
@@ -82,6 +94,30 @@ begin
   finally
     Free;
   end;
+end;
+
+{ Определить версию Python }
+function GetPythonVersion(PythonExec: AnsiString): AnsiString;
+var
+  str: AnsiString;
+begin
+  Result := '';
+  if RunCommand(PythonExec, ['--version'], str) then
+    str := ReplaceStr(Trim(str), 'Python ', '');
+    logfunc.DebugMsgFmt('Версия Python <%s>', [str]);
+    Result := str;
+end;
+
+{ Определить версию Python3 }
+function GetPython3Version(): AnsiString;
+begin
+  Result := GetPythonVersion('python3');
+end;
+
+{ Определить версию Python2 }
+function GetPython2Version(): AnsiString;
+begin
+  Result := GetPythonVersion('python2');
 end;
 
 end.
