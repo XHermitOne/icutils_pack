@@ -1,7 +1,7 @@
 {
 Модуль поддержки словарей
 
-Версия: 0.0.1.1
+Версия: 0.0.3.1
 }
 unit dictionary;
 
@@ -10,154 +10,164 @@ unit dictionary;
 interface
 
 uses
-    Classes, SysUtils;
+  Classes, SysUtils;
 
 type
-    {
-    Класс объектов строк для хранения в словаре
-    }
-    TObjString = class(TObject)
+  {
+  Класс объектов строк для хранения в словаре
+  }
+  TObjString = class(TObject)
     private
-       { Значение }
-       FValue: AnsiString;
+      { Значение }
+      FValue: AnsiString;
     public
-       property Value: AnsiString read FValue write FValue;
-    end;
+      property Value: AnsiString read FValue write FValue;
+  end;
 
-    {
-    Класс объектов даты-времени для хранения в словаре
-    }
-    TObjDateTime = class(TObject)
+  {
+  Класс объектов даты-времени для хранения в словаре
+  }
+  TObjDateTime = class(TObject)
     private
-       { Значение }
-       FValue: TDateTime;
+      { Значение }
+      FValue: TDateTime;
     public
-       property Value: TDateTime read FValue write FValue;
-    end;
+      property Value: TDateTime read FValue write FValue;
+  end;
 
-    {
-    Класс объектов списка строк для хранения в словаре
-    }
-    TObjStringList = class(TObject)
+  {
+  Класс объектов списка строк для хранения в словаре
+  }
+  TObjStringList = class(TObject)
     private
-       { Значение }
-       FValue: TStringList;
+      { Значение }
+      FValue: TStringList;
     public
-       { Значение. Свойство }
-       property Value: TStringList read FValue write FValue;
+      { Значение. Свойство }
+      property Value: TStringList read FValue write FValue;
     end;
 
-    {
-    TStrDictionary - Простой словарь в качастве ключей у которого строки.
-    }
-    TStrDictionary = class(TStringList)
+  {
+  TStrDictionary - Простой словарь в качастве ключей у которого строки.
+  }
+  TStrDictionary = class(TStringList)
     public
-       constructor Create();
-       destructor Destroy; override;
-       procedure Free;
+      constructor Create();
+      destructor Destroy; override;
 
-       {Распечатать содержимое словаря}
-       procedure PrintContent();
-       {
-       Проверка на существование переменной окружения с таким именем
-       @param sKey Проверяемый ключ словаря
-       }
-       function HasKey(sKey: AnsiString): Boolean;
-       {
-       Получить ключ по индексу
-       @param iIndex Индекс
-       }
-       function GetKey(iIndex: Integer): AnsiString;
-       { Список ключей }
-       function GetKeys(): TStringList;
-       { Список ключей }
-       function GetKeysStr(): AnsiString;
-       {
-       Получить объект по имени/ключу
-       @param sKey Ключ
-       }
-       function GetByName(sKey: AnsiString): TObject;
-       {
-       Установить объект в словаре
-       @param sKey Ключ
-       @param oObject Устанавливаемый объект
-       }
-       function SetObject(sKey: AnsiString; oObject: TObject): Boolean;
+      {
+      Функция очистки содержимого словаря
+      @param bAutoFree Автоматическое удаление элементов из памяти
+      }
+      function ClearContent(bAutoFree: Boolean = True): Boolean;
 
-       { Проверка на тустой словарь }
-       function IsEmpty(): Boolean;
-       {
-       Функция обновления словаря по другому словарю
-       @param Dictionary Объект словаря
-       }
-       function Update(Dictionary: TStrDictionary): Boolean;
-       {
-       Функция удаления элемента словаря по ключу
-       @param sKey Ключ
-       }
-       function DelItem(sKey: AnsiString): Boolean;
+      {Распечатать содержимое словаря}
+      procedure PrintContent(aDictionary: TStrDictionary = nil);
 
-       {
-       Добавить строку в словарь
-       @param sKey Ключ
-       @param sValue Строковое значение
-       }
-       function AddStrValue(sKey: AnsiString; sValue: AnsiString): LongInt;
-       {
-       Получить строку из словаря по ключу
-       @param sKey Ключ
-       }
-       function GetStrValue(sKey: AnsiString): AnsiString;
-       {
-       Установить строку в словарь
-       @param sKey Ключ
-       @param sValue Строковое значение
-       }
-       function SetStrValue(sKey: AnsiString; sValue: AnsiString): Boolean;
+      {Распечатать ключи словаря}
+      procedure PrintKeys(aDictionary: TStrDictionary = nil);
 
-       {
-       Добавить дату-время в словарь
-       @param sKey Ключ
-       @param dtValue Значение TDateTime
-       }
-       function AddDateTimeValue(sKey: AnsiString; dtValue: TDateTime): LongInt;
-       {
-       Получить дату-время из словаря
-       @param sKey Ключ
-       }
-       function GetDateTimeValue(sKey: AnsiString): TDateTime;
-       {
-       Установить дату-время в словарь
-       @param sKey Ключ
-       @param dtValue Значение TDateTime
-       }
-       function SetDateTimeValue(sKey: AnsiString; dtValue: TDateTime): Boolean;
+      {
+      Проверка на существование переменной окружения с таким именем
+      @param sKey Проверяемый ключ словаря
+      }
+      function HasKey(sKey: AnsiString): Boolean;
+      {
+      Получить ключ по индексу
+      @param iIndex Индекс
+      }
+      function GetKey(iIndex: Integer): AnsiString;
+      { Список ключей }
+      function GetKeys(): TStringList;
+      { Список ключей }
+      function GetKeysStr(): AnsiString;
+      {
+      Получить объект по имени/ключу
+      @param sKey Ключ
+      }
+      function GetByName(sKey: AnsiString): TObject;
+      {
+      Установить объект в словаре
+      @param sKey Ключ
+      @param oObject Устанавливаемый объект
+      }
+      function SetObject(sKey: AnsiString; oObject: TObject): Boolean;
 
-       {
-       Добавить список строк в словарь
-       @param sKey Ключ
-       @param slValue Значение TStringList
-       }
-       function AddStrList(sKey: AnsiString; slValue: TStringList): LongInt;
-       {
-       Получить список строк из словаря
-       @param sKey Ключ
-       }
-       function GetStrList(sKey: AnsiString): TStringList;
-       {
-       Установить список строк в словарь
-       @param sKey Ключ
-       @param slValue Значение TStringList
-       }
-       function SetStrList(sKey: AnsiString; slValue: TStringList): Boolean;
+      { Проверка на тустой словарь }
+      function IsEmpty(): Boolean;
+      {
+      Функция обновления словаря по другому словарю
+      @param Dictionary Объект словаря
+      }
+      function Update(Dictionary: TStrDictionary; bAutoFree: Boolean = False): Boolean;
+      {
+      Функция удаления элемента словаря по ключу
+      @param sKey Запрашиваемый ключ
+      @param bAutoFree Автоматически удалить объект-значение?
+      @return True/False
+      }
+      function DelItem(sKey: AnsiString; bAutoFree: Boolean = True): Boolean;
+      {
+      Добавить строку в словарь
+      @param sKey Ключ
+      @param sValue Строковое значение
+      }
+      function AddStrValue(sKey: AnsiString; sValue: AnsiString): LongInt;
+      {
+      Получить строку из словаря по ключу
+      @param sKey Ключ
+      }
+      function GetStrValue(sKey: AnsiString): AnsiString;
+      {
+      Установить строку в словарь
+      @param sKey Ключ
+      @param sValue Строковое значение
+      }
+      function SetStrValue(sKey: AnsiString; sValue: AnsiString): Boolean;
 
-    end;
+      {
+      Добавить дату-время в словарь
+      @param sKey Ключ
+      @param dtValue Значение TDateTime
+      }
+      function AddDateTimeValue(sKey: AnsiString; dtValue: TDateTime): LongInt;
+      {
+      Получить дату-время из словаря
+      @param sKey Ключ
+      }
+      function GetDateTimeValue(sKey: AnsiString): TDateTime;
+      {
+      Установить дату-время в словарь
+      @param sKey Ключ
+      @param dtValue Значение TDateTime
+      }
+      function SetDateTimeValue(sKey: AnsiString; dtValue: TDateTime): Boolean;
+
+      {
+      Добавить список строк в словарь
+      @param sKey Ключ
+      @param slValue Значение TStringList
+      }
+      function AddStrList(sKey: AnsiString; slValue: TStringList): LongInt;
+      {
+      Получить список строк из словаря
+      @param sKey Ключ
+      }
+      function GetStrList(sKey: AnsiString): TStringList;
+      {
+      Установить список строк в словарь
+      @param sKey Ключ
+      @param slValue Значение TStringList
+      }
+      function SetStrList(sKey: AnsiString; slValue: TStringList): Boolean;
+
+  end;
 
 
 implementation
 
 uses
-  logfunc;
+  logfunc, memfunc;
 
 
 constructor TStrDictionary.Create();
@@ -167,27 +177,48 @@ end;
 
 destructor TStrDictionary.Destroy;
 begin
-  // Free;
+  ClearContent(True);
+
+  // ВНИМАНИЕ! Нельзя использовать функции Free.
+  // Если объект создается при помощи Create, то удаляться из
+  // памяти должен с помощью Dуstroy
+  // Тогда не происходит утечки памяти
   inherited Destroy;
 end;
 
-procedure TStrDictionary.Free;
+{
+Функция очистки содержимого словаря
+@param bAutoFree Автоматическое удаление элементов из памяти
+}
+function TStrDictionary.ClearContent(bAutoFree: Boolean): Boolean;
 var
   i: Integer;
   obj: TObject;
+
 begin
-  for i := 0 to Count - 1 do
-  begin
-    obj := GetObject(i);
-    obj.Free;
-  end;
-  inherited Free;
+  Result := False;
+  if Count > 0 then
+    if not bAutoFree then
+    begin
+      Clear;
+      Result := True;
+    end
+    else
+    begin
+      // Перебираем элементы начиная с последнего
+      for i := Count - 1 downto 0 do
+      begin
+        obj := Objects[i];
+        obj.Destroy;
+        Delete(i);
+      end;
+    end;
 end;
 
 {
 Печать содержимое словаря
 }
-procedure TStrDictionary.PrintContent();
+procedure TStrDictionary.PrintContent(aDictionary: TStrDictionary);
 var
   i: Integer;
   item_name: AnsiString;
@@ -195,31 +226,58 @@ var
   msg: AnsiString;
   item_obj: TObject;
 begin
+  if aDictionary = nil then
+    aDictionary := self;
+
   try
-    msg := Format('Содержимое <%s : %s>:', [UnitName, ClassName]);
+    msg := Format('Содержимое <%s : %s>:', [aDictionary.UnitName, aDictionary.ClassName]);
     logfunc.ServiceMsg(msg);
 
-    for i := 0 to GetCount-1 do
+    for i := 0 to aDictionary.GetCount-1 do
     begin
-      item_name := Strings[i];
-      item_obj := Objects[i];
+      item_name := aDictionary.Strings[i];
+      item_obj := aDictionary.Objects[i];
       if item_obj <> nil then
       begin
         item_class := item_obj.ClassName;
         if item_class = 'TObjString' then
           item_class := (item_obj As TObjString).Value
+        else if item_class = 'TStrDictionary' then
+          aDictionary.PrintContent(item_obj As TStrDictionary)
         else
           item_class := Format('<%s>', [item_class]);
       end
       else
         item_class := '<nil>';
 
-        msg := Format(#9'%s'#9'='#9'%s', [item_name, item_class]);
+        msg := Format('    %s  =  %s', [item_name, item_class]);
         logfunc.ServiceMsg(msg);
-    end;
+      end;
 
   except
-    logfunc.FatalMsg('Ошибка печати содержания окружения');
+    logfunc.FatalMsg('Ошибка печати содержания словаря');
+  end;
+end;
+
+{Распечатать ключи словаря}
+procedure TStrDictionary.PrintKeys(aDictionary: TStrDictionary);
+var
+  i: Integer;
+  item_name: AnsiString;
+begin
+  if aDictionary = nil then
+    aDictionary := self;
+
+  try
+    logfunc.ServiceMsgFmt('Ключи <%s : %s>:', [UnitName, ClassName]);
+
+    for i := 0 to GetCount-1 do
+    begin
+      item_name := Strings[i];
+      logfunc.ServiceMsgFmt('    %s', [item_name]);
+    end;
+  except
+    logfunc.FatalMsg('Ошибка печати ключей словаря');
   end;
 end;
 
@@ -230,8 +288,10 @@ function TStrDictionary.HasKey(sKey: AnsiString): Boolean;
 var
   idx: Integer;
 begin
+  // PrintContent;
   idx := IndexOf(sKey);
-  result := idx >= 0;
+  Result := idx >= 0;
+  // logfunc.ServiceMsgFmt('Проверка наличия ключа <%s : %d>', [sKey, idx]);
 end;
 
 {
@@ -243,9 +303,9 @@ var
 begin
   idx := IndexOf(sKey);
   if idx >= 0 then
-    result := GetObject(idx)
+    Result := GetObject(idx)
   else
-    result := nil;
+    Result := nil;
 end;
 
 {
@@ -258,13 +318,13 @@ begin
   if not HasKey(sKey) then
   begin
     AddObject(sKey, oObject);
-    result := True;
-    exit;
+    Result := True;
+    Exit;
   end;
   idx := IndexOf(sKey);
   Delete(idx);
   AddObject(sKey, oObject);
-  result := True;
+  Result := True;
 end;
 
 {
@@ -272,7 +332,7 @@ end;
 }
 function TStrDictionary.IsEmpty(): Boolean;
 begin
-  result := Count = 0;
+  Result := Count = 0;
 end;
 
 {
@@ -284,7 +344,7 @@ var
 begin
   obj := TObjString.Create;
   obj.Value := sValue;
-  result := AddObject(sKey, obj);
+  Result := AddObject(sKey, obj);
 end;
 
 
@@ -293,10 +353,10 @@ function TStrDictionary.GetStrValue(sKey: AnsiString): AnsiString;
 var
   obj: TObjString;
 begin
-  result := '';
+  Result := '';
   obj := GetByName(sKey) As TObjString;
   if obj <> nil then
-    result := obj.Value;
+    Result := obj.Value;
 end;
 
 {
@@ -309,13 +369,13 @@ begin
   if not HasKey(sKey) then
   begin
     AddStrValue(sKey, sValue);
-    result := True;
-    exit;
+    Result := True;
+    Exit;
   end;
 
   obj := GetByName(sKey) As TObjString;
   obj.Value := sValue;
-  result := True;
+  Result := True;
 end;
 
 {
@@ -323,22 +383,23 @@ end;
 }
 function TStrDictionary.GetKey(iIndex: Integer): AnsiString;
 begin
-  result := Strings[iIndex];
+  Result := Strings[iIndex];
 end;
 
 {
 Функция обновления словаря по другому словарю.
 }
-function TStrDictionary.Update(Dictionary: TStrDictionary): Boolean;
+function TStrDictionary.Update(Dictionary: TStrDictionary; bAutoFree: Boolean): Boolean;
 var
   i: Integer;
   key: AnsiString;
   obj: TObject;
+
 begin
-  if (Dictionary = nil) or (Dictionary.IsEmpty) then
+  if Dictionary = nil then
   begin
-    result := False;
-    exit;
+    Result := False;
+    Exit;
   end;
 
   for i := 0 to Dictionary.Count - 1 do
@@ -346,25 +407,44 @@ begin
     key := Dictionary.GetKey(i);
     obj := Dictionary.GetObject(i);
     if obj.ClassName = 'TObjString' then
-      // Добавление строкового объекта
-      AddStrValue(key, (obj As TObjString).Value)
+      if HasKey(key) then
+        SetStrValue(key, (obj As TObjString).Value)
+      else
+      begin
+        // Добавление строкового объекта
+        AddStrValue(key, (obj As TObjString).Value);
+        logfunc.DebugMsgFmt('Добавление ключа <%s>', [key]);
+      end
     else
-      // Добавление объекта
+      //Добавление объекта
       AddObject(key, obj);
   end;
-  result := True;
+
+  if bAutoFree then
+    Dictionary.Destroy;
+
+  Result := True;
 end;
 
 {
-Функция удаления элемента словаря
+Функция удаления элемента словаря по ключу.
 }
-function TStrDictionary.DelItem(sKey: AnsiString): Boolean;
+function TStrDictionary.DelItem(sKey: AnsiString; bAutoFree: Boolean): Boolean;
 var
   idx: Integer;
+  obj: TObject;
+
 begin
   idx := IndexOf(sKey);
+
+  if bAutoFree then
+  begin
+    obj := Objects[idx];
+    obj.Destroy;
+  end;
+
   Delete(idx);
-  result := True;
+  Result := True;
 end;
 
 {
@@ -378,7 +458,7 @@ begin
   keys := TStringList.Create;
   for i := 0 to Count -1 do
     keys.Add(Strings[i]);
-  result := keys;
+  Result := keys;
 end;
 
 
@@ -386,10 +466,10 @@ function TStrDictionary.GetKeysStr(): AnsiString;
 var
   i: Integer;
 begin
-  result := '';
+  Result := '';
   for i := 0 to Count - 1 do
-    result := result + ', ' + Format('''%s''', [Strings[i]]);
-  result := '[' + result + ']';
+    Result := Result + ', ' + Format('''%s''', [Strings[i]]);
+  Result := '[' + result + ']';
 end;
 
 {
@@ -401,7 +481,7 @@ var
 begin
   obj := TObjDateTime.Create;
   obj.Value := dtValue;
-  result := AddObject(sKey, obj);
+  Result := AddObject(sKey, obj);
 end;
 
 
@@ -412,10 +492,10 @@ function TStrDictionary.GetDateTimeValue(sKey: AnsiString): TDateTime;
 var
   obj: TObjDateTime;
 begin
-  result := 0;
+  Result := 0;
   obj := GetByName(sKey) As TObjDateTime;
   if obj <> nil then
-    result := obj.Value;
+    Result := obj.Value;
 end;
 
 {
@@ -428,13 +508,13 @@ begin
   if not HasKey(sKey) then
   begin
     AddDateTimeValue(sKey, dtValue);
-    result := True;
-    exit;
+    Result := True;
+    Exit;
   end;
 
   obj := GetByName(sKey) As TObjDateTime;
   obj.Value := dtValue;
-  result := True;
+  Result := True;
 end;
 
 {
@@ -446,7 +526,7 @@ var
 begin
   obj := TObjStringList.Create;
   obj.Value := slValue;
-  result := AddObject(sKey, obj);
+  Result := AddObject(sKey, obj);
 end;
 
 
@@ -457,10 +537,10 @@ function TStrDictionary.GetStrList(sKey: AnsiString): TStringList;
 var
   obj: TObjStringList;
 begin
-  result := nil;
+  Result := nil;
   obj := GetByName(sKey) As TObjStringList;
   if obj <> nil then
-    result := obj.Value;
+    Result := obj.Value;
 end;
 
 {
@@ -473,13 +553,13 @@ begin
   if not HasKey(sKey) then
   begin
     AddStrList(sKey, slValue);
-    result := True;
-    exit;
+    Result := True;
+    Exit;
   end;
 
   obj := GetByName(sKey) As TObjStringList;
   obj.Value := slValue;
-  result := True;
+  Result := True;
 end;
 
 end.

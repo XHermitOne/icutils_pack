@@ -10,7 +10,11 @@ unit sysfunc;
 interface
 
 uses
-    Classes, SysUtils, Process, FileUtil, StrUtils;
+  {$IFDEF windows}
+  Windows,
+  {$ENDIF}
+  Classes, SysUtils,
+  Process {, UTF8Process};
 
 {$IFDEF linux}
 { some linux-specific code }
@@ -31,28 +35,20 @@ function IsOSLinux(): Boolean;
 { Проверка является ли ОС Windows }
 function IsOSWindows(): Boolean;
 
-{
-Запуск внешней программы
-@param Command комманда запуска
-}
-procedure ExecuteSystem(Command: AnsiString);
+{ Наименование компьютера }
+function GetNetComputerName(): AnsiString;
 
-{
-Определить версию Python
-@param PythonExef комманда запуска Python
-}
-function GetPythonVersion(PythonExec: AnsiString): AnsiString;
-
-{ Определить версию Python3 }
-function GetPython3Version(): AnsiString;
-
-{ Определить версию Python2 }
-function GetPython2Version(): AnsiString;
+{$IFDEF WINDOWS}
+  function Wow64DisableWow64FsRedirection(x: Pointer): longbool; stdcall; external 'Kernel32.dll' name 'Wow64DisableWow64FsRedirection';
+  function Wow64RevertWow64FsRedirection (x: Pointer): longbool; stdcall; external 'Kernel32.dll' name 'Wow64RevertWow64FsRedirection';
+{$ENDIF}
+{Запуск внешней программы и получение списка выводимых строк}
+function GetOutLinesOfProcess(ACommand: AnsiString): AnsiString;
 
 implementation
 
 uses
-  strfunc, logfunc;
+  strfunc;
 
 {
 Тип операционной системы: linux/windows
@@ -74,50 +70,61 @@ begin
   Result := OS = 'windows';
 end;
 
-{ Запуск внешней программы }
-procedure ExecuteSystem(Command: AnsiString);
+{ Наименование компьютера }
+function GetNetComputerName(): AnsiString;
+{$IFDEF windows}
 var
-  cmd: TArrayOfString;
-  i: Integer;
-begin
-  cmd := strfunc.SplitStr(Command, ' ');
-  with TProcess.Create(nil) do
-  try
-    Executable := FindDefaultExecutablePath(cmd[0]);
-    logfunc.DebugMsgFmt('Выполняющая программа <%s>', [Executable]);
-    for i := 1 to Length(cmd) - 1 do
-    begin
-      Parameters.Add(Trim(cmd[i]));
-      logfunc.DebugMsgFmt('%d. Параметр коммандной строки <%s>', [i, Trim(cmd[i])]);
-    end;
-    Execute;
-  finally
-    Free;
-  end;
-end;
+  buffer: Array[0..255] Of char;
+  size: dword;
+{$ENDIF}
 
-{ Определить версию Python }
-function GetPythonVersion(PythonExec: AnsiString): AnsiString;
-var
-  str: AnsiString;
 begin
   Result := '';
-  if RunCommand(PythonExec, ['--version'], str) then
-    str := ReplaceStr(Trim(str), 'Python ', '');
-    logfunc.DebugMsgFmt('Версия Python <%s>', [str]);
-    Result := str;
+
+  {$IFDEF windows}
+  size := 256;
+  if GetComputerName(buffer, size) then
+    Result := buffer;
+  {$ENDIF}
 end;
 
-{ Определить версию Python3 }
-function GetPython3Version(): AnsiString;
+{Запуск внешней программы и получение списка выводимых строк}
+function GetOutLinesOfProcess(ACommand: AnsiString): AnsiString;
+var
+  process: TProcess;
+  output_lines: TStringList;	// Выходные строки
+  //{$IFDEF WINDOWS}
+  //  pnt: Pointer;
+  //{$ENDIF}
 begin
-  Result := GetPythonVersion('python3');
-end;
+  output_lines := TStringList.Create;
+  process := TProcess.Create(nil);
+  // Ожидание окончания работы внешней программы,
+  // Отключить консоль,
+  // Вывод результатов в спец поток
+  process.Options := process.Options + [poWaitOnExit, poNoConsole, poUsePipes];
 
-{ Определить версию Python2 }
-function GetPython2Version(): AnsiString;
-begin
-  Result := GetPythonVersion('python2');
+  process.Executable := ACommand;
+
+  //{$IFDEF WINDOWS}
+  //  pnt := nil;
+  //  Wow64DisableWow64FsRedirection(pnt);
+  //{$ENDIF}
+
+  process.Execute;
+
+  //{$IFDEF WINDOWS}
+  //  Wow64RevertWow64FsRedirection(pnt);
+  //{$ENDIF}
+
+  // Результат вывода процесса -> список строк
+  output_lines.LoadFromStream(process.Output);
+
+  Result := strfunc.ConvertStrListToString(output_lines);
+
+  // ВНИМАНИЕ! Не забываем список строк после использования удалить
+  output_lines.Free;
+  process.Free;
 end;
 
 end.
