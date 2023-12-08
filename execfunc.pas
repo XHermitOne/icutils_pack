@@ -21,7 +21,7 @@ procedure ExecuteSystem(Command: AnsiString);
 implementation
 
 uses
-  strfunc, logfunc;
+  strfunc, logfunc, exttypes;
 
 { Запуск внешней программы }
 procedure ExecuteSystem(Command: AnsiString);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CONFIG>
-  <Package Version="4">
+  <Package Version="5">
     <Name Value="icutils"/>
     <Type Value="RunAndDesignTime"/>
     <CompilerOptions>
@@ -10,8 +10,8 @@
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Version Build="2"/>
-    <Files Count="9">
+    <Version Release="1" Build="1"/>
+    <Files Count="17">
       <Item1>
         <Filename Value="filefunc.pas"/>
         <UnitName Value="filefunc"/>
@@ -48,14 +48,50 @@
         <Filename Value="collections.pas"/>
         <UnitName Value="collections"/>
       </Item9>
+      <Item10>
+        <Filename Value="dbfunc.pas"/>
+        <UnitName Value="dbfunc"/>
+      </Item10>
+      <Item11>
+        <Filename Value="dtfunc.pas"/>
+        <UnitName Value="dtfunc"/>
+      </Item11>
+      <Item12>
+        <Filename Value="execfunc.pas"/>
+        <UnitName Value="execfunc"/>
+      </Item12>
+      <Item13>
+        <Filename Value="exttypes.pas"/>
+        <UnitName Value="exttypes"/>
+      </Item13>
+      <Item14>
+        <Filename Value="inifunc.pas"/>
+        <UnitName Value="inifunc"/>
+      </Item14>
+      <Item15>
+        <Filename Value="mathfunc.pas"/>
+        <UnitName Value="mathfunc"/>
+      </Item15>
+      <Item16>
+        <Filename Value="netfunc.pas"/>
+        <UnitName Value="netfunc"/>
+      </Item16>
+      <Item17>
+        <Filename Value="pyfunc.pas"/>
+        <UnitName Value="pyfunc"/>
+      </Item17>
     </Files>
-    <RequiredPkgs Count="2">
+    <CompatibilityMode Value="True"/>
+    <RequiredPkgs Count="3">
       <Item1>
-        <PackageName Value="LCL"/>
+        <PackageName Value="laz_synapse"/>
       </Item1>
       <Item2>
-        <PackageName Value="FCL"/>
+        <PackageName Value="LCL"/>
       </Item2>
+      <Item3>
+        <PackageName Value="FCL"/>
+      </Item3>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

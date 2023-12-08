@@ -1,7 +1,7 @@
 {
 Функции работы со строками
 
-Версия: 0.0.7.1
+Версия: 0.0.8.1
 }
 unit strfunc;
 
@@ -77,6 +77,14 @@ function ConvertStrListToString(StrList: TStringList): AnsiString;
 @return True/False
 }
 function IsStrInList(sString: AnsiString; StringArray: Array of String): Boolean;
+
+{
+Получить индекс строки в списке строк
+@param sString Строка
+@param StringArray Массив строк
+@return Индекс строки или -1 если строка не найдена
+}
+function GetIdxStrInList(sString: AnsiString; StringArray: Array of String): Integer;
 
 {
 Проверка есть ли какая либо из указанных строк в строке
@@ -282,6 +290,20 @@ begin
     if StringArray[i] = sString then
     begin
       Result := True;
+      Exit;
+    end;
+end;
+
+{ Получить индекс строки в списке строк }
+function GetIdxStrInList(sString: AnsiString; StringArray: Array of String): Integer;
+var
+  i: Integer;
+begin
+  Result := -1;
+  for i := 0 to Length(StringArray) - 1 do
+    if StringArray[i] = sString then
+    begin
+      Result := i;
       Exit;
     end;
 end;

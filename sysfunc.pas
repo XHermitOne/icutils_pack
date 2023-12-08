@@ -1,7 +1,7 @@
 {
 Функции взаимодействия с операционной системой
 
-Версия: 0.0.3.1
+Версия: 0.0.3.2
 }
 unit sysfunc;
 
@@ -12,6 +12,9 @@ interface
 uses
   {$IFDEF windows}
   Windows,
+  {$ENDIF}
+  {$IFDEF UNIX}
+  unix,
   {$ENDIF}
   Classes, SysUtils,
   Process {, UTF8Process};
@@ -85,6 +88,10 @@ begin
   size := 256;
   if GetComputerName(buffer, size) then
     Result := buffer;
+  {$ENDIF}
+
+  {$IFDEF LINUX}
+    Result := unix.GetHostName;
   {$ENDIF}
 end;
 

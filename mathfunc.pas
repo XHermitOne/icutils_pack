@@ -1,7 +1,7 @@
 {
 Функции математических вычислений.
 
-Версия: 0.0.0.1
+Версия: 0.0.1.1
 }
 unit mathfunc;
 
@@ -29,7 +29,7 @@ begin
   Result := 0;
 
   for i := AStartIdx to AStopIdx - 1 do
-    Result := Result + StrToInt(AIntegerListAsStr.Items[i]);
+    Result := Result + StrToInt(AIntegerListAsStr.Strings[i]);
 end;
 
 end.
