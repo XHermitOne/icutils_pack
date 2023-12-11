@@ -1,7 +1,7 @@
 {
 Функции работы со строками
 
-Версия: 0.0.8.1
+Версия: 0.0.9.1
 }
 unit strfunc;
 
@@ -176,6 +176,13 @@ function ParseStrLines(sString: AnsiString): TStringList;
 Преобразовать логическое в строку
 }
 function BooleanToStr(aBoolean: Boolean): AnsiString;
+
+{ Объединить массивы строк }
+function JoinArrayOfString(AArray1, AArray2: TArrayOfString): TArrayOfString;
+
+{ Функции конвертации списка строк в массив и обратно }
+function StringListToArrayOfString(AStringList: TStringList): TArrayOfString;
+function ArrayOfStringToStringList(AArrayOfString: TArrayOfString): TStringList;
 
 implementation
 
@@ -504,6 +511,42 @@ begin
     Result := 'True'
   else
     Result := 'False';
+end;
+
+{ Объединить массивы строк }
+function JoinArrayOfString(AArray1, AArray2: TArrayOfString): TArrayOfString;
+var
+  i: Integer;
+begin
+  SetLength(Result, Length(AArray1) + Length(AArray2));
+
+  for i := 0 to Length(AArray1) - 1 do
+    Result[i] := AArray1[i];
+
+  for i := 0 to Length(AArray2) - 1 do
+    Result[i + Length(AArray1)] := AArray2[i];
+end;
+
+{ Функции конвертации списка строк в массив и обратно }
+function StringListToArrayOfString(AStringList: TStringList): TArrayOfString;
+var
+  i: Integer;
+begin
+  // Convert from TStringList to Array of String
+  SetLength(Result, AStringList.Count);
+  for i := 0 to AStringList.Count - 1 do
+    Result[i] := AStringList[i];
+end;
+
+function ArrayOfStringToStringList(AArrayOfString: TArrayOfString): TStringList;
+var
+  i: Integer;
+begin
+  Result := TStringList.Create();
+  // Convert from Array of String to TStringList
+  Result.Clear;
+  for i := Low(AArrayOfString) to High(AArrayOfString) do
+    Result.Add(AArrayOfString[i]);
 end;
 
 end.
