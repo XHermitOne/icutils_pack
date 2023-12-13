@@ -1,7 +1,7 @@
 {
 Функции математических вычислений.
 
-Версия: 0.0.1.2
+Версия: 0.0.1.3
 }
 unit mathfunc;
 
@@ -20,6 +20,7 @@ function SumRangeAsInteger(AIntegerListAsStr: TStrings; AStartIdx, AStopIdx: Int
 implementation
 
 uses
+    math,
     logfunc;
 
 { Вычислить сумму }
@@ -29,6 +30,8 @@ var
 begin
   Result := 0;
 
+  AStartIdx := Max(AStartIdx, 0);
+  AStopIdx := Min(AStopIdx, AIntegerListAsStr.Count);
   for i := AStartIdx to AStopIdx - 1 do
     Result := Result + StrToInt(AIntegerListAsStr.Strings[i]);
 end;
@@ -39,6 +42,8 @@ var
 begin
   Result := 0;
 
+  AStartIdx := Max(AStartIdx, 0);
+  AStopIdx := Min(AStopIdx, AIntegerListAsStr.Count);
   for i := AStartIdx to AStopIdx - 1 do
     Result := Result + StrToInt(AIntegerListAsStr.Strings[i]);
 end;
