@@ -1,7 +1,7 @@
 {
 Функции взаимодействия с операционной системой
 
-Версия: 0.0.3.2
+Версия: 0.0.4.1
 }
 unit sysfunc;
 
@@ -40,6 +40,9 @@ function IsOSWindows(): Boolean;
 
 { Наименование компьютера }
 function GetNetComputerName(): AnsiString;
+
+{ Текущий зарегистрированный пользователь в системе }
+function GetSysUserName: String;
 
 {$IFDEF WINDOWS}
   function Wow64DisableWow64FsRedirection(x: Pointer): longbool; stdcall; external 'Kernel32.dll' name 'Wow64DisableWow64FsRedirection';
@@ -92,6 +95,30 @@ begin
 
   {$IFDEF LINUX}
     Result := unix.GetHostName;
+  {$ENDIF}
+end;
+
+
+function GetSysUserName: String;
+{$IF DEFINED(WINDOWS) AND NOT DEFINED(WINCE)}
+var
+  A:array [0..256] of Char;
+  L:DWORD;
+{$ENDIF}
+begin
+  {$IF DEFINED(WINDOWS) AND NOT DEFINED(WINCE)}
+  FillChar(A, SizeOf(A), 0);
+  L:=SizeOf(A)-1;
+  if Windows.GetUserNameA(@A, L) then
+  begin
+(*    Result:=SysToUTF8(StrPas(@A)); *)
+    Result:=StrPas(@A);
+  end
+  else
+    (*Result:=GetEnvironmentVariableUTF8('USERNAME');*)
+    Result:=SysUtils.GetEnvironmentVariable('USERNAME');
+  {$ELSE}
+  Result := GetEnvironmentVariable('USER');
   {$ENDIF}
 end;
 

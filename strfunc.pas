@@ -1,7 +1,7 @@
 {
 Функции работы со строками
 
-Версия: 0.0.9.1
+Версия: 0.0.9.2
 }
 unit strfunc;
 
@@ -442,7 +442,7 @@ function IsEndsWith(sTxt: AnsiString; sSubStr: AnsiString): Boolean;
 var
   sub_str: AnsiString;
 begin
-  sub_str := Copy(sTxt, Length(sTxt) - Length(sSubStr), Length(sSubStr));
+  sub_str := Copy(sTxt, Length(sTxt) - Length(sSubStr) + 1, Length(sSubStr));
   Result := sSubStr = sub_str;
 end;
 
@@ -472,7 +472,7 @@ function ReplaceEnd(sTxt: AnsiString; sSrcStr: AnsiString; sDstStr: AnsiString =
 begin
   Result := sTxt;
   if IsEndsWith(sTxt, sSrcStr) then
-    Result := Copy(sTxt, Length(sTxt) - Length(sSrcStr), Length(sSrcStr)) + sDstStr;
+    Result := Copy(sTxt, 0,  Length(sTxt) - Length(sSrcStr)) + sDstStr;
 end;
 
 {
