@@ -1,7 +1,7 @@
 {
 Функции работы со строками
 
-Версия: 0.0.9.2
+Версия: 0.1.1.1
 }
 unit strfunc;
 
@@ -41,6 +41,8 @@ function JoinStr(StringArray: Array Of String; sDelim: AnsiString): AnsiString;
 @return Строка с удаленными обрамляющими симвлами
 }
 function StripStr(sString: AnsiString; sChar: Char = ' '): AnsiString;
+function LeftStripStr(sString: AnsiString; sChar: Char = ' '): AnsiString;
+function RightStripStr(sString: AnsiString; sChar: Char = ' '): AnsiString;
 
 {
 Распарсить строку, представляющую собой список строк
@@ -224,6 +226,26 @@ begin
 
   if AnsiStartsStr(sChar, sString) or AnsiEndsStr(sChar, sString) then
     Result := StripStr(Result, sChar);
+end;
+
+function LeftStripStr(sString: AnsiString; sChar: Char): AnsiString;
+begin
+  Result := sString;
+  if AnsiStartsStr(sChar, sString) then
+    Result := Copy(sString, 2, Length(sString) - 1);
+
+  if AnsiStartsStr(sChar, sString) then
+    Result := LeftStripStr(Result, sChar);
+end;
+
+function RightStripStr(sString: AnsiString; sChar: Char): AnsiString;
+begin
+  Result := sString;
+  if AnsiEndsStr(sChar, sString) then
+    Result := Copy(sString, 1, Length(sString) - 1);
+
+  if AnsiEndsStr(sChar, sString) then
+    Result := RightStripStr(Result, sChar);
 end;
 
 {
