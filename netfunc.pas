@@ -1,7 +1,10 @@
 {
 Функции работы с сетью.
 
-Версия: 0.0.2.1
+Версия: 0.0.2.2
+
+ВНИМАНИЕ! Для работы модуля необходим пакет laz_synapse:
+Скачать: git clone https://github.com/geby/synapse
 }
 unit netfunc;
 
@@ -10,10 +13,6 @@ unit netfunc;
 interface
 
 uses
-    //Classes, SysUtils,
-    //blcksock,
-    //synautil,
-    //synsock,
     crt,
     pingsend;
 
