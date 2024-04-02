@@ -10,8 +10,8 @@
         <UnitOutputDirectory Value="lib/$(TargetCPU)-$(TargetOS)"/>
       </SearchPaths>
     </CompilerOptions>
-    <Version Release="1" Build="1"/>
-    <Files Count="17">
+    <Version Release="2" Build="1"/>
+    <Files Count="19">
       <Item1>
         <Filename Value="filefunc.pas"/>
         <UnitName Value="filefunc"/>
@@ -80,18 +80,29 @@
         <Filename Value="pyfunc.pas"/>
         <UnitName Value="pyfunc"/>
       </Item17>
+      <Item18>
+        <Filename Value="graphfunc.pas"/>
+        <UnitName Value="graphfunc"/>
+      </Item18>
+      <Item19>
+        <Filename Value="toolfunc.pas"/>
+        <UnitName Value="toolfunc"/>
+      </Item19>
     </Files>
     <CompatibilityMode Value="True"/>
-    <RequiredPkgs Count="3">
+    <RequiredPkgs Count="4">
       <Item1>
-        <PackageName Value="laz_synapse"/>
+        <PackageName Value="cairocanvas_pkg"/>
       </Item1>
       <Item2>
-        <PackageName Value="LCL"/>
+        <PackageName Value="laz_synapse"/>
       </Item2>
       <Item3>
-        <PackageName Value="FCL"/>
+        <PackageName Value="LCL"/>
       </Item3>
+      <Item4>
+        <PackageName Value="FCL"/>
+      </Item4>
     </RequiredPkgs>
     <UsageOptions>
       <UnitPath Value="$(PkgOutDir)"/>

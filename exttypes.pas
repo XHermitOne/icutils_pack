@@ -1,7 +1,7 @@
 {
 Расширенные типы для использования в программе
 
-Версия: 0.0.2.1
+Версия: 0.0.3.1
 }
 unit exttypes;
 
@@ -15,6 +15,33 @@ uses
 
 
 type
+  {Указатели на основные типы}
+  // Целые
+  PByte = ^Byte;		      // 0..255			                1 байт
+  PShortInt = ^ShortInt;	  // -128..+127                     1 байт
+  PWord = ^Word;		      // 0..65535                       2 байта
+  PSmallInt = ^SmallInt;	  // -32768..+32767                 2 байта
+  //PInteger = ^Integer;		  // -2147483648..+2147483647       4 байта
+  PLongInt = ^LongInt;		  // -2147483648..+2147483647       4 байта
+  PLongWord = ^LongWord;	  // 0..4294967295		            4 байта
+  PCardinal = ^Cardinal;	  // 0..4294967295		            4 байта
+  PInt64 = ^Int64;		      // -2^63..+2^63-1		            8 байт
+
+  // Логические
+  PBoolean = ^Boolean;		// 1 байт
+  PByteBool = ^ByteBool;	// 1 байт
+  PWordBool = ^WordBool;	// 2 байта
+  PLongBool = ^LongBool;	// 4 байта
+
+  // Вещественные
+  PReal48 = ^Real48;		// 6 байт
+  PReal = ^Real;                // 8 байт
+  PSingle = ^Single;            // 4 байта
+  PDouble = ^Double;            // 8 байт
+  PExtended = ^Extended;        // 10 байт
+  PComp = ^Comp;                // 8 байт
+  PCurrency = ^Currency;        // 8 байт
+
   { Массив строк }
   TArrayOfString = Array Of String;
 

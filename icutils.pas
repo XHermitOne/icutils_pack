@@ -10,7 +10,7 @@ interface
 uses
   filefunc, keyboardfunc, memfunc, strfunc, sysfunc, dictionary, logfunc, 
   collections, dbfunc, dtfunc, execfunc, exttypes, inifunc, mathfunc, netfunc, 
-  pyfunc, LazarusPackageIntf;
+  pyfunc, graphfunc, toolfunc, LazarusPackageIntf;
 
 implementation
 
